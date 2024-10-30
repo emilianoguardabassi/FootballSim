@@ -1,22 +1,24 @@
-CFLAGS= -Wall -Werror -Wextra -pedantic -std=c99 -g 
-SOURCE= *.c 
-OBJECTS= *.o 
+CFLAGS= -Wall -Werror -Wextra -pedantic -std=gnu99 
+GDB_FLAGS = -g
+SOURCES= main.c team.c game.c array_helper.c 
+OBJECTS= $(SOURCES:.c=.o) 
 TARGET= test
 
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
 
+.PHONY: gdb
+gdb: CFLAGS += $(GDB_FLAGS)
+gdb: clean $(TARGET)
 
-main:mainobj	
-	gcc $(CFLAGS) $(OBJECTS) -o $(TARGET)
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-mainobj:$(SOURCE)
-	gcc $(CFLAGS) -c $(SOURCE)
-
-
-test: testobj 
-	gcc main.o team.o game.o array_helper.o -o $(TARGET)
-
-testobj: main.c team.c 
-	gcc -c main.c team.c game.c array_helper.c -g
-
+.PHONY: clean
 clean:
-	rm $(OBJECTS) $(TARGET) 
+	rm -f $(OBJECTS) $(TARGET)
+
+.PHONY: run
+run: $(TARGET)
+	./$(TARGET) input/wc_teams_2022-group.in
+

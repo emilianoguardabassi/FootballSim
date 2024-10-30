@@ -4,97 +4,163 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct t_game {
+struct game_t {
   score home_s; // home team score
   score road_s; // road team score
   team home;
   team road; // visiting team
 };
 
-game game_innit() {
-  game m = NULL;
-  m = malloc(sizeof(struct t_game));
-  m->home_s = 0u;
-  m->road_s = 0u;
-  m->home = NULL;
-  m->road = NULL;
-  return m;
+game init_game() {
+    game g = NULL;
+    g = malloc(sizeof(struct game_t));
+    if (g == NULL) {
+        perror("ERROR: allocating memory for team");
+        exit(EXIT_FAILURE);
+    }
+    g->home_s = 0u;
+    g->road_s = 0u;
+    g->home = NULL;
+    g->road = NULL;
+    return g;
 }
 
-bool cheknullteam(game m) { return m->home != NULL && m->road != NULL; }
+bool is_empty_game(game m) {
+    return (m->home == NULL && m->road == NULL); }
 
-game game_addteam(game m, team h, team r) {
-  assert(m != NULL);
-  m->home = h;
-  m->road = r;
-  return m;
+static bool confirm_override_team(const char *team_name) {
+    char override = 'n';
+    while (1) {
+        printf("The %s team is already in use.\nDo you want to override it? y/n ... ", team_name);
+        scanf(" %c", &override);  // Notice the space before %c, is to ignore \n
+        if (override == 'y') {
+            printf("%s team overridden\n", team_name);
+            return true;
+        } else if (override == 'n') {
+            printf("%s team not overridden\n", team_name);
+            return false;
+        } else {
+            printf("Invalid input. Please enter 'y' or 'n'.\n");
+        }
+    }
 }
 
-game game_homescore(game m) {
-  assert(cheknullteam(m));
-  m->home_s++;
-  return m;
+game addteam_game(game g, team h, team r) {
+    assert(g != NULL);
+
+    if (!is_empty_team(g->home) && g->home != NULL) {
+        if (confirm_override_team(get_name_team(g->home))) {
+            g->home = h;
+        }
+
+    } else {
+        g->home = h;
+    }
+
+    if (!is_empty_team(g->road) && g->road != NULL) {
+        if (confirm_override_team(get_name_team(g->road))) {
+            g->road = r;
+        }
+    } else {
+        g->road = r;
+    }
+
+    return g;
 }
 
-game game_roadscore(game m) {
-  assert(cheknullteam(m));
-  m->road_s++;
-  return m;
+void addHomescore_game(game g) {
+    assert(g != NULL  && !is_empty_game(g));
+    g->home_s++;
 }
 
-team game_returnHometeam(game m) {
-  assert(cheknullteam(m));
-  return m->home;
+void addRoadscore_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    g->road_s++;
 }
 
-score game_returnHomescore(game m) { return m->home_s; }
-
-team game_returnRoadteam(game m) {
-  assert(cheknullteam(m));
-  return m->road;
+team getHometeam_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return g->home;
 }
 
-score game_returnRoadscore(game m) {
-  assert(cheknullteam(m));
-  return m->road_s;
+score getHomescore_game(game g) { 
+    assert(g != NULL && !is_empty_game(g));
+    return g->home_s;
 }
 
-bool game_winnningHome(game m) {
-  assert(cheknullteam(m));
-  return (m->home_s > m->road_s);
+team getRoadteam_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return g->road;
 }
 
-bool game_winningRoad(game m) {
-  assert(cheknullteam(m));
-  return (m->road_s > m->home_s);
+score getRoadscore_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return g->road_s;
 }
 
-bool game_tie(game m) {
-  assert(cheknullteam(m));
-  return (m->home_s == m->road_s);
+bool wHome_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return (g->home_s > g->road_s);
 }
 
-void game_print(game m) {
-  assert(cheknullteam(m));
-  printf("*******************************\n");
-  printf("Home: ");
-  print_team(m->home);
-  printf("Score: %u \n", m->home_s);
-  printf("Road: ");
-  print_team(m->road);
-  printf("Score: %u\n", m->road_s);
-  printf("*******************************\n");
+bool wRoad_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return (g->road_s > g->home_s);
 }
 
-void game_printRes(game m) {
-  printf("%s: %u | %u :%s\n", name_team(m->home), m->home_s, m->road_s,
-         name_team(m->road));
+bool tie_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    return (g->home_s == g->road_s);
 }
-void game_onlydestroy(game m) { free(m); }
-void game_destroy(game m) {
 
-  destroy_team(m->home);
-  destroy_team(m->road);
-  free(m);
-  // return m;
+void showStatus_game(game g){
+    assert(g != NULL && !is_empty_game(g));
+    if (wHome_game(g)) {
+        printf("%s is winnig\n", get_name_team(getHometeam_game(g)));
+    } else if (wRoad_game(g)) {
+        printf("%s is winnig\n", get_name_team(getRoadteam_game(g)));
+    } else if (tie_game(g)){
+        printf("%s and %s are tied \n", get_name_team(getHometeam_game(g)), get_name_team(getRoadteam_game(g)));
+    } else {
+        perror("ERROR: printing status of the game");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void show_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    printf("*******************************\n");
+    printf("Home: ");
+    show_team(g->home);
+    printf("Score: %u \n", getHomescore_game(g));
+    printf("Road: ");
+    show_team(g->road);
+    printf("Score: %u\n", getRoadscore_game(g));
+    printf("*******************************\n");
+}
+
+void showRes_game(game g) {
+    assert(g != NULL && !is_empty_game(g));
+    printf("%s: %u | %u :%s\n", get_name_team(g->home), g->home_s, 
+                                g->road_s, get_name_team(g->road));
+}
+
+void destroyOnly_game(game g) { 
+    if (g != NULL) {
+    free(g);
+    g = NULL;
+    }
+}
+
+void destroyAll_game(game g) {
+    if (g != NULL) {
+        if (g->home != NULL) {
+            destroy_team(g->home);
+        }
+        if (g->road != NULL) {
+            destroy_team(g->road);
+        }
+        free(g);
+        g = NULL;
+    }
 }

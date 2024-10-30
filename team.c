@@ -11,7 +11,7 @@ struct t_team {
   stats defense;
 };
 
-team empty_team() {
+team init_team() {
     team t = NULL; 
     t = malloc(sizeof(struct t_team));
     if (t == NULL) {
@@ -32,18 +32,19 @@ bool is_empty_team(team t) {
 
 void inv_team(team t) {
     if (t == NULL || is_empty_team(t)) {
-        perror("ERROR: Team is empty");
+        perror("ERROR: Team is NULL or empty");
         abort();
     }
 }
 
-team create_team(team t, stats att, stats mid, stats def,
-                 name name) {
+team create_team(team t, stats att, stats mid,
+                 stats def, name name) {
 
     if (!is_empty_team(t)) {
         perror("ERROR: tried to override a team");
         exit(EXIT_FAILURE);
     }
+
     free(t->name);
     t->name = strdup(name);
     t->attack = att;

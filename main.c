@@ -24,36 +24,37 @@ char *parse_filepath(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-  char *filepath = NULL;
-  filepath = parse_filepath(argc, argv);
-  team a[TEAMS_AMOUNT];
-  array_from_file(a, TEAMS_AMOUNT, filepath);
-
-  team t = empty_team();
-  team h = empty_team();
-  t = create_team(t, 82, 79, 66, "brazil");
-  h = create_team(h, 79, 75, 49, "test");
-
-  // print_team(t);
-  // print_team(h);
-
-  game m = game_innit();
-  m = game_addteam(m, t, h);
-  m = game_homescore(m);
-  // m = game_roadscore(m);
-  // m = game_roadscore(m);
-  game_printRes(m);
-  game_print(m);
-  // printf("Home w: %d Road w: %d  Tie: %d\n", game_winnningHome(m),
-  // game_winningRoad(m), game_tie(m));
-  printf("printing some elements of array\n");
-  array_dump(a, TEAMS_AMOUNT);
-  game_destroy(m);
-  game test = game_innit();
-  test = game_addteam(test, a[0], a[5]);
-  game_print(test);
-  destroy_arrayTeam(a, 32);
-  game_onlydestroy(test);
-
-  return EXIT_SUCCESS;
+   char *filepath = NULL;
+   filepath = parse_filepath(argc, argv);
+   team a[TEAMS_AMOUNT];
+   array_from_file(a, TEAMS_AMOUNT, filepath);
+ 
+   team t = init_team();
+   team h = init_team();
+   t = create_team(t, 82, 79, 66, "brazil");
+   h = create_team(h, 79, 75, 49, "test");
+ 
+   show_team(t);
+   show_team(h);
+ 
+   game m = init_game();
+   m = addteam_game(m, t, h);
+   addHomescore_game(m);
+   /* m = addteam_game(m, h, t); */
+   // m = game_roadscore(m);
+   // m = game_roadscore(m);
+   showRes_game(m);
+   show_game(m);
+   // printf("Home w: %d Road w: %d  Tie: %d\n", game_winnningHome(m),
+   // game_winningRoad(m), game_tie(m));
+   printf("printing some elements of array\n");
+   array_dump(a, TEAMS_AMOUNT);
+   destroyAll_game(m);
+   game test = init_game();
+   test = addteam_game(test, a[0], a[5]);
+   show_game(test);
+   destroy_arrayTeam(a);
+   destroyOnly_game(test);
+ 
+   return EXIT_SUCCESS;
 }

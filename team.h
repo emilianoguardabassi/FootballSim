@@ -12,9 +12,9 @@ typedef char *name;
 typedef unsigned int stats;
 
 /* initializes an empty team. */
-team empty_team();
+team init_team();
 
-/* check if the team is emprty */
+/* check if the team is empty */
 bool is_empty_team(team t);
 
 /* abort the program if the team is NULL */

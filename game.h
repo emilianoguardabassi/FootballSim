@@ -4,55 +4,58 @@
 #include "team.h"
 #include <stdbool.h>
 
-typedef struct t_game *game;
+typedef struct game_t *game;
 typedef unsigned score;
 
 // initializes the game type
-game game_innit();
+game init_game();
 
 // returns true if both teams are not NULL
-bool checknullteam(game m);
+bool is_empty_game(game g);
 
 // initializes the two rivals teams
-game game_addteam(game m, team h, team r);
+game addteam_game(game g, team h, team r);
 
 // add score to home team
-game game_homescore(game m);
+void addHomescore_game(game g);
 
 // add score to road team
-game game_roadscore(game m);
+void addRoadscore_game(game g);
 
-// returnds the home team
-team game_returnHometeam(game m);
+// returns the home team
+team getHometeam_game(game g);
 
 // returns the home team scored goals
-score game_returnHomescore(game m);
+score getHomescore_game(game g);
 
-// returnsthe road team
-team game_returnRoadteam(game m);
+// returns the road team
+team getRoadteam_game(game g);
 
 // returns the road team scored goals
-score game_returnRoadscore(game m);
+score getRoadscore_game(game g);
 
 // checks if home team has more goals than road team
-bool game_winnningHome(game m);
+bool wHome_game(game g);
 
 // checks if road team has more goals than home team
-bool game_winningRoad(game m);
+bool wRoad_game(game g);
 
 // checks if the two teams are tied
-bool game_tie(game m);
+bool tie_game(game g);
 
-// prints game to promt
-void game_print(game m);
+// prints the current status of the game
+void showStatus_game(game g);
+
+// prints game to prompt
+void show_game(game g);
 
 // print the teams name and score on tv format
-void game_printRes(game m);
+void showRes_game(game g);
 
-// free only game but not team
-void game_onlydestroy(game m);
+// free only the game instance without freeing the team instances
+void destroyOnly_game(game g);
 
-// free the memory of the team
-void game_destroy(game m);
+// free the game and all associated team instances
+void destroyAll_game(game g);
 
 #endif

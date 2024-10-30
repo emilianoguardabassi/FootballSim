@@ -1,4 +1,4 @@
-# Roadmap for FWCS (Football WorldusCup Simulatior)
+# Roadmap for FWCS (Football World Cup Simulator)
 
 ## Objectives
 
