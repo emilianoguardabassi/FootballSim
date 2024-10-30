@@ -1,11 +1,16 @@
-#ifndef _game_H_
-#define _game_H_
+#ifndef _GAME_H_
+#define _GAME_H_
 
 #include "team.h"
 #include <stdbool.h>
 
 typedef struct game_t *game;
 typedef unsigned score;
+typedef enum {
+    HOME = 'h', 
+    ROAD= 'r', 
+    NONE = 'n'
+} penalties_t ;
 
 // initializes the game type
 game init_game();
@@ -22,6 +27,9 @@ void addHomescore_game(game g);
 // add score to road team
 void addRoadscore_game(game g);
 
+//sets the status of the penalties
+void setPenalties_game(game g, penalties_t p);
+
 // returns the home team
 team getHometeam_game(game g);
 
@@ -34,6 +42,9 @@ team getRoadteam_game(game g);
 // returns the road team scored goals
 score getRoadscore_game(game g);
 
+//returns the status of the penalties
+penalties_t getPenalties_game(game g);
+
 // checks if home team has more goals than road team
 bool wHome_game(game g);
 
@@ -45,6 +56,9 @@ bool tie_game(game g);
 
 // prints the current status of the game
 void showStatus_game(game g);
+
+//prints the penalties status
+void showPenalties_game(game g);
 
 // prints game to prompt
 void show_game(game g);

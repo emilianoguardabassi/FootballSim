@@ -5,10 +5,11 @@
 #include <stdlib.h>
 
 struct game_t {
-  score home_s; // home team score
-  score road_s; // road team score
-  team home;
-  team road; // visiting team
+    score home_s; // home team score
+    score road_s; // road team score
+    team home;
+    team road; // visiting team
+    penalties_t pen;
 };
 
 game init_game() {
@@ -22,6 +23,7 @@ game init_game() {
     g->road_s = 0u;
     g->home = NULL;
     g->road = NULL;
+    g->pen = NONE;
     return g;
 }
 
@@ -78,6 +80,11 @@ void addRoadscore_game(game g) {
     g->road_s++;
 }
 
+void setPenalties_game(game g, penalties_t p){
+    assert(g != NULL && !is_empty_game(g));
+    g->pen = p;
+}
+
 team getHometeam_game(game g) {
     assert(g != NULL && !is_empty_game(g));
     return g->home;
@@ -96,6 +103,11 @@ team getRoadteam_game(game g) {
 score getRoadscore_game(game g) {
     assert(g != NULL && !is_empty_game(g));
     return g->road_s;
+}
+
+penalties_t getPenalties_game(game g){
+    assert(g != NULL && !is_empty_game(g));
+    return g->pen;
 }
 
 bool wHome_game(game g) {
@@ -127,6 +139,17 @@ void showStatus_game(game g){
     }
 }
 
+void showPenalties_game(game g){
+    penalties_t p = getPenalties_game(g);
+    if (p == HOME) {
+        printf("Penalties : HOME!\n");
+    } else if (p == ROAD) {
+        printf("Penalties : ROAD!\n");
+    } else {
+        printf("Penalties : NONE\n");
+    }
+}
+
 void show_game(game g) {
     assert(g != NULL && !is_empty_game(g));
     printf("*******************************\n");
@@ -136,6 +159,7 @@ void show_game(game g) {
     printf("Road: ");
     show_team(g->road);
     printf("Score: %u\n", getRoadscore_game(g));
+    showPenalties_game(g);
     printf("*******************************\n");
 }
 
