@@ -11,15 +11,15 @@
 - [ ] The team data can be updated from the official Fifa web.
 
 - [ ] You can create custom teams via prompt (or possibly GUI) and add them to the roaster.
-- [ ]
+
 - [ ] You can inspect the team and get the data from the team and maybe players.
-- [ ]
+
 - [ ] Add customs events to the game, for example: "Messi dribbled three defenders and scored a goal".
-- [ ]
+
 - [ ] Export the data to an xlsx file.
-- [ ]
+
 - [ ] Implement a command that lets you input team data to create a custom team.
-- [ ]
+
 - [ ] Print stats of the corresponding ADT.
 
 
