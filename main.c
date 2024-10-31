@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TEAMS_AMOUNT 32
 
 char *parse_filepath(int argc, char *argv[]) {
   /* Parse the filepath given by command line argument. */
@@ -26,8 +25,8 @@ char *parse_filepath(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
    char *filepath = NULL;
    filepath = parse_filepath(argc, argv);
-   team a[TEAMS_AMOUNT];
-   array_from_file(a, TEAMS_AMOUNT, filepath);
+   team a[MAX_TEAMS];
+   array_from_file(a, MAX_TEAMS, filepath);
  
    team t = init_team();
    team h = init_team();
@@ -40,15 +39,10 @@ int main(int argc, char *argv[]) {
    game m = init_game();
    m = addteam_game(m, t, h);
    addHomescore_game(m);
-   /* m = addteam_game(m, h, t); */
-   // m = game_roadscore(m);
-   // m = game_roadscore(m);
    showRes_game(m);
    show_game(m);
-   // printf("Home w: %d Road w: %d  Tie: %d\n", game_winnningHome(m),
-   // game_winningRoad(m), game_tie(m));
    printf("printing some elements of array\n");
-   array_dump(a, TEAMS_AMOUNT);
+   array_dump(a, MAX_TEAMS);
    destroyAll_game(m);
    game test = init_game();
    test = addteam_game(test, a[0], a[5]);

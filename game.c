@@ -7,9 +7,10 @@
 struct game_t {
     score home_s; // home team score
     score road_s; // road team score
-    team home;
+    team home;  // local team
     team road; // visiting team
-    penalties_t pen;
+    penalties_t pen; //maybe it needs to go on resume_t
+                    // tracks status of the penalties
 };
 
 game init_game() {
@@ -125,7 +126,7 @@ bool tie_game(game g) {
     return (g->home_s == g->road_s);
 }
 
-void showStatus_game(game g){
+void showStatus_game(game g){ //FIXME: maybe change the ifs to case-switch ?
     assert(g != NULL && !is_empty_game(g));
     if (wHome_game(g)) {
         printf("%s is winnig\n", get_name_team(getHometeam_game(g)));
@@ -150,7 +151,7 @@ void showPenalties_game(game g){
     }
 }
 
-void show_game(game g) {
+void show_game(game g) { //TODO: translate the data to a JSON file
     assert(g != NULL && !is_empty_game(g));
     printf("*******************************\n");
     printf("Home: ");

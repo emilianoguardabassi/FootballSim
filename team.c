@@ -80,7 +80,7 @@ stats get_overall_team(team t) {
   return overall;
 }
 
-team* team_to_array(team t, team array[]) {
+team* team_to_array(team t, team array[]) { //FIXME: think about inputing legth
     for (size_t i = 0; i < MAX_TEAMS; i++) {
         if (array[i] == NULL) {
             array[i] = t;
@@ -109,8 +109,10 @@ void show_team(team t) {
 }
 
 void destroy_team(team t) {
-    free(t->name);
-    t->name=NULL;
-    free(t);
-    t = NULL;
+    if (t != NULL) {
+        free(t->name);
+        t->name=NULL;
+        free(t);
+        t = NULL;
+    }
 }
